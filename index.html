@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <div>
+            <input v-model='query' placeholder="Enter API URL">
+            <button @click='get_info'>Get Info</button>
+        </div>
+        <p v-for="item in template">{{item[0]}}: {{item[1]}}</p>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.0"></script>
+    <script src="wp.js"></script>
+</body>
+</html>
