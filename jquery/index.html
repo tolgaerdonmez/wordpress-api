@@ -13,44 +13,104 @@
     </style>
 </head>
 <body>
-    <table width='100%'>
-        <tr>
-            <th>Name</th>
-            <th>Rating</th>
-            <th>Downloaded</th>
-            <th>Last Updated</th>
-        </tr>
-        <tr>
-            <td id="temp_name">s</td>
-            <td id="temp_rating">s</td>
-            <td id="temp_downloaded">s</td>
-            <td id="temp_last_update">s</td>
-        </tr>
-    </table>
+    <div>
+        <h1>Ücretsiz</h1>
+        <table width='100%'>
+            <tr>
+                <th>Name</th>
+                <th>Rating</th>
+                <th>Downloaded</th>
+                <th>Last Updated</th>
+                <th>Version</th>
+            </tr>
+            <tr>
+                <td id="temp_name">s</td>
+                <td id="temp_rating">s</td>
+                <td id="temp_downloaded">s</td>
+                <td id="temp_last_update">s</td>
+                <td id="temp_version"></td>
+            </tr>
+        </table>  
+    </div>
+    <div>
+        <h1>Ücretli</h1>
+        <table width='100%'>
+            <tr>
+                <th>Name</th>
+                <th>Version</th>
+                <th>Last Updated</th>
+                <th>Downloaded-Sold</th>
+            </tr>
+            <tr>
+                <td id="ptemp_name">s</td>
+                <td id="ptemp_version">s</td>
+                <td id="ptemp_last_update">s</td>
+                <td id="ptemp_downloaded">s</td>
+            </tr>
+        </table>  
+    </div>
+
     <script>
         var url = "https://api.wordpress.org/themes/info/1.1/?action=theme_information&request[slug]=twentynineteen";
+        var urlp = "https://api.envato.com/v3/market/catalog/item?id=5484319";
         jQuery.support.cors = true;
         jQuery(document).ready(() => {
-        var settings = {
-            "async": true,
-            "crossDomain": true,
-            "url": url,
-            "method": "GET",
-            "dataType": "json"
-        }
-        var request = jQuery.ajax(settings);
+            var settings = (url, headers = null) => {
+                var set = {
+                    "async": true,
+                    "crossDomain": true,
+                    "url": url,
+                    "method": "GET",
+                    "dataType": "json"
+                }
+                if (headers){
+                    set['headers'] = headers;
+                }
+                return set;
+            };
+            var request = jQuery.ajax(settings(url));
 
-        request.done(function (response) {
-            console.log(response);
-            jQuery('#temp_name').text(response.name);
-            jQuery('#temp_rating').text(response.rating);
-            jQuery('#temp_downloaded').text(response.downloaded);
-            jQuery('#temp_last_update').text(response.last_updated);
-        });
-        
-            
+            request.done(function (response) {
+                jQuery('#temp_name').text(response.name);
+                jQuery('#temp_rating').text(response.rating);
+                jQuery('#temp_downloaded').text(response.downloaded);
+                jQuery('#temp_last_update').text(response.last_updated);
+                jQuery('#temp_version').text(response.version);
+            });
+            var headers = {
+                    "Authorization": "Bearer x9AcpZ9lZMQJx7fdsG4q9dp2pyZbWTF0",
+                    "cache-control": "no-cache",
+                }
+            var request = jQuery.ajax(settings(urlp,headers));
+
+            request.done(function (response) {
+                jQuery('#ptemp_name').text(response.name);
+                jQuery('#ptemp_downloaded').text(response.number_of_sales);
+                jQuery('#ptemp_version').text(response.wordpress_theme_metadata.version);
+                jQuery('#ptemp_last_update').text(response.updated_at);
+            });
         });
     </script>
-    
+    <!-- <script>
+        
+        jQuery(document).ready(() => {
+            var settings = {
+                "async": true,
+                "crossDomain": true,
+                "url": url,
+                "method": "GET",
+                "dataType": "json"
+            }
+            var request = jQuery.ajax(settings);
+
+            request.done(function (response) {
+                console.log(response);
+                jQuery('#ptemp_name').text(response.name);
+                jQuery('#ptemp_downloaded').text(response.number_of_sales);
+                jQuery('#ptemp_version').text(response.wordpress_theme_metadata.version);
+                jQuery('#ptemp_last_update').text(response.updated_at);
+            });
+        });
+    </script> -->
 </body>
 </html>
